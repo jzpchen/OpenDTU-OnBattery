@@ -35,7 +35,7 @@
             </CardElement>
 
             <CardElement
-                v-if="batteryConfigList.enabled && (batteryConfigList.provider == 1 || batteryConfigList.provider == 6)"
+                v-if="batteryConfigList.enabled && (batteryConfigList.provider == 1 || batteryConfigList.provider == 6 || batteryConfigList.provider == 8)"
                 :text="$t('batteryadmin.SerialSettings')"
                 textVariant="text-bg-primary"
                 addSpace
@@ -881,6 +881,7 @@ export default defineComponent({
                 { key: 5, value: 'SBSCan' },
                 { key: 6, value: 'JbdBmsSerial' },
                 { key: 7, value: 'ZendureMqtt' },
+                { key: 8, value: 'LiTimeSerial' },
             ],
             serialBmsInterfaceTypeList: [
                 { key: 0, value: 'Uart' },

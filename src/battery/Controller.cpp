@@ -7,6 +7,7 @@
 #include <battery/pytes/Provider.h>
 #include <battery/sbs/Provider.h>
 #include <battery/victronsmartshunt/Provider.h>
+#include <battery/litime/Provider.h>
 #include <battery/zendure/LocalMqttProvider.h>
 #include <battery/zendure/ZendureMqttProvider.h>
 #include <Configuration.h>
@@ -89,12 +90,22 @@ void Controller::updateSettings()
                     return;
             }
             break;
+        case 8:
+            _upProvider = std::make_unique<LiTime::Provider>();
+            break;
         default:
             DTU_LOGE("Unknown provider: %d", config.Battery.Provider);
             return;
     }
 
-    if (!_upProvider->init()) { _upProvider = nullptr; }
+    if (_upProvider) {
+        if (!_upProvider->init()) {
+            DTU_LOGE("[Controller] Battery provider init FAILED!");
+            _upProvider = nullptr;
+        } else {
+            DTU_LOGE("[Controller] Battery provider init SUCCESSFUL!");
+        }
+    }
 }
 
 void Controller::loop()

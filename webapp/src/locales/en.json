@@ -768,6 +768,7 @@
         "ProviderSBSCan": "SBS Unipower using CAN bus",
         "ProviderJkBmsSerial": "Jikong (JK) BMS using serial connection",
         "ProviderJbdBmsSerial": "Jiabaida (JBD) BMS using serial connection",
+        "ProviderLiTimeSerial": "LiTime BMS using serial (RS485) connection",
         "ProviderMqtt": "Battery data from MQTT broker",
         "ProviderVictron": "Victron SmartShunt using VE.Direct interface",
         "ProviderPytesCan": "Pytes using CAN bus",
