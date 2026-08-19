@@ -1,0 +1,23 @@
+Comment,Designator,Footprint,LCSC Part #,Description
+XL7015E1,U1,TO-252-5L,C77697,80V 0.8A Step-Down DC-DC Buck Converter
+B0505S-1WR3,U2,SIP-4,C112318,5V to 5V 1W 1.5kV Isolated DC-DC Converter
+CA-IS3082WX,U3,SOIC-16-WB,C2892976,5kVrms Isolated RS-485 Transceiver
+CA-IS3050G,U4,SOIC-16-WB,C2892977,5kVrms Isolated CAN Bus Transceiver
+ADuM1201ARZ,U5,SOIC-8,C3524,Dual-Channel Digital Magnetic Isolator
+CMT2300A Module,U6,Castellated-1.27mm,C2941320,CMT2300A 868/915MHz RF Transceiver
+330uH 1.2A,L1,SMD 12x12mm,C381489,Power Inductor for Buck Converter
+SS310,D1,SMC,C8678,100V 3A Schottky Barrier Rectifier
+SM712,D2,SOT-23,C14434,Bi-directional TVS ESD Diode Array for RS-485
+NUP2105L,D3,SOT-23,C14435,Dual Bi-directional TVS Diode for CAN Bus
+47uF 100V,C1,Radial 8x11.5mm,C134371,High-Voltage Input Filter Electrolytic Capacitor
+220uF 16V,C3,Radial 6.3x11mm,C33019,Low-ESR Output Filter Electrolytic Capacitor
+10uF 16V,"C4, C5, C6",0805,C15850,SMD Ceramic Bypass Capacitor
+0.1uF 100V,C2,0805,C49678,High-Voltage Decoupling Capacitor
+3.9k 1%,R1,0805,C25992,Feedback Upper Resistor (for 5.0V output)
+1.2k 1%,R2,0805,C25867,Feedback Lower Resistor
+120R 1%,"R_TERM1, R_TERM2",0805,C22787,120 Ohm Bus Termination Resistors
+5.00mm 2P,J1,XY2500V-5.00-2P,C2897455,5.00mm Pitch 2-Pin Screw Terminal Block (DC IN)
+5.00mm 3P,"J2, J3",XY2500V-5.00-3P,C2897456,5.00mm Pitch 3-Pin Screw Terminal Block (RS485/CAN)
+5.00mm 4P,J4,XY2500V-5.00-4P,C2897457,5.00mm Pitch 4-Pin Screw Terminal Block (VE.Direct)
+1x22 Pin Female,"J5, J6",Socket_2.54mm_1x22,C2941328,2.54mm Female Socket Headers for ESP32-S3
+1x4 Pin Female,J7,Socket_2.54mm_1x04,C2941323,2.54mm Female Header for 2.4-inch OLED Display

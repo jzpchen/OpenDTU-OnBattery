@@ -1,0 +1,21 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "34488eb0-afdc-4f49-a1f9-4d68b29fea9b")
+	(paper "A3")
+	(title_block
+		(title "OpenDTU-OnBattery All-in-One Carrier Board")
+		(date "2026-08-18")
+		(rev "v2.0")
+		(company "OpenDTU-OnBattery Hardware")
+		(comment 1 "Galvanically Isolated RS485, CAN, VE.Direct, 80V Buck & CMT2300A")
+	)
+	(lib_symbols
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)
