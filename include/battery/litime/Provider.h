@@ -37,8 +37,10 @@ private:
     int8_t _rxEnablePin = -1;
     int8_t _txEnablePin = -1;
     uint32_t _lastRequest = 0;
+    bool _infoQueried = false;
+    bool _snQueried = false;
 
-    uint8_t _rxBuf[128];
+    uint8_t _rxBuf[256];
     size_t _rxLen = 0;
     uint32_t _lastRxByteTime = 0;
 };

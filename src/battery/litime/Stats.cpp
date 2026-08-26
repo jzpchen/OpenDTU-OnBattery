@@ -22,7 +22,7 @@ void Stats::setUnitId(uint8_t unitId)
 }
 
 void Stats::updateTelemetry(uint32_t packVoltageMv, uint8_t socPercent, int32_t currentMa,
-                             uint32_t remainAh, uint32_t totalAh, int16_t tempC,
+                             float remainAh, float totalAh, int16_t tempC,
                              std::map<uint8_t, uint16_t> const& cellVoltages)
 {
     uint32_t now = millis();
@@ -42,8 +42,8 @@ void Stats::getLiveViewData(JsonVariant& root) const
     float voltage = getVoltage();
     float current = getChargeCurrent();
     addLiveViewValue(root, "power", current * voltage, "W", 2);
-    addLiveViewValue(root, "capacityRemaining", static_cast<float>(_remainAh), "Ah", 1);
-    addLiveViewValue(root, "capacityTotal", static_cast<float>(_totalAh), "Ah", 1);
+    addLiveViewValue(root, "capacityRemaining", _remainAh, "Ah", 1);
+    addLiveViewValue(root, "capacityTotal", _totalAh, "Ah", 1);
 
     addLiveViewTextValue(root, "chargeEnabled", (_status & 0x80) ? "yes" : "no");
     addLiveViewTextValue(root, "dischargeEnabled", (_status & 0x80) ? "yes" : "no");
@@ -74,8 +74,8 @@ void Stats::getLiveViewData(JsonVariant& root) const
 void Stats::mqttPublish() const
 {
     ::Batteries::Stats::mqttPublish();
-    MqttSettings.publish("battery/capacityRemaining", String(_remainAh));
-    MqttSettings.publish("battery/capacityTotal", String(_totalAh));
+    MqttSettings.publish("battery/capacityRemaining", String(_remainAh, 1));
+    MqttSettings.publish("battery/capacityTotal", String(_totalAh, 1));
     MqttSettings.publish("battery/statusFlag", String(_status));
 }
 
