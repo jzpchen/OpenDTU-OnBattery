@@ -167,22 +167,11 @@ void Provider::loop()
                     int16_t current16 = static_cast<int16_t>(p[41] | (static_cast<uint16_t>(p[42]) << 8));
                     int32_t currentMa = static_cast<int32_t>(current16);
 
-                    // Discharged / Consumed Capacity (Bytes 45-46, uint16 LE: e.g. 24 = 24 Ah discharged)
-                    uint16_t rawDischarged = p[45] | (static_cast<uint16_t>(p[46]) << 8);
-                    float dischargedAh = static_cast<float>(rawDischarged);
-                    if (rawDischarged > 500) {
-                        dischargedAh = rawDischarged / 100.0f;
-                    }
+                    // Temperature (Bytes 45-46: NTC Temp Sensor 1, uint16 LE in integer °C)
+                    uint16_t rawTemp = p[45] | (static_cast<uint16_t>(p[46]) << 8);
+                    int16_t tempC = static_cast<int16_t>(rawTemp);
 
-                    // Temperature (Bytes 55-56, uint16 LE: in 0.1 deg F)
-                    uint16_t rawTemp = p[55] | (static_cast<uint16_t>(p[56]) << 8);
-                    int16_t tempC = 25;
-                    if (rawTemp >= 400 && rawTemp <= 1400) {
-                        float tempF = rawTemp / 10.0f;
-                        tempC = static_cast<int16_t>(roundf((tempF - 32.0f) * 5.0f / 9.0f));
-                    }
-
-                    // Rated Capacity (Bytes 57-58, uint16 LE: 3000 = 30.00 Ah)
+                    // Rated Capacity (Bytes 57-58, uint16 LE in 0.01 Ah: 3000 = 30.00 Ah)
                     uint16_t rawRated = p[57] | (static_cast<uint16_t>(p[58]) << 8);
                     float totalAh = 30.0f;
                     if (rawRated > 500) {
@@ -191,15 +180,15 @@ void Provider::loop()
                         totalAh = static_cast<float>(rawRated);
                     }
 
-                    // State of Charge (SoC) (Bytes 83-84, uint16 LE: e.g. 25 = 25%)
+                    // State of Charge (SoC) (Bytes 83-84, uint16 LE: e.g. 25 = 25%, 41 = 41%)
                     uint16_t rawSoc = p[83] | (static_cast<uint16_t>(p[84]) << 8);
                     uint8_t socPercent = (rawSoc <= 100) ? static_cast<uint8_t>(rawSoc) : 100;
 
-                    // Remaining Capacity = Total Capacity - Discharged Capacity (BMS reported)
-                    // e.g. 30.0 Ah - 24.0 Ah = 6.0 Ah remaining
+                    // Remaining Capacity (Bytes 55-56, uint16 LE in 0.01 Ah: e.g. 1234 = 12.34 Ah, 750 = 7.50 Ah)
+                    uint16_t rawRem = p[55] | (static_cast<uint16_t>(p[56]) << 8);
                     float remAh = 0.0f;
-                    if (dischargedAh <= totalAh && dischargedAh >= 0.0f) {
-                        remAh = totalAh - dischargedAh;
+                    if (rawRem > 0 && rawRem <= (rawRated + 200)) {
+                        remAh = rawRem / 100.0f;
                     } else {
                         remAh = totalAh * (socPercent / 100.0f);
                     }
