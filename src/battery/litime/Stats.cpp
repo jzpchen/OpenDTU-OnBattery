@@ -45,6 +45,11 @@ void Stats::getLiveViewData(JsonVariant& root) const
     addLiveViewValue(root, "capacityRemaining", _remainAh, "Ah", 1);
     addLiveViewValue(root, "capacityTotal", _totalAh, "Ah", 1);
 
+    auto oTemperature = getTemperature();
+    if (oTemperature) {
+        addLiveViewValue(root, "temperature", *oTemperature, "°C", 0);
+    }
+
     addLiveViewTextValue(root, "chargeEnabled", (_status & 0x80) ? "yes" : "no");
     addLiveViewTextValue(root, "dischargeEnabled", (_status & 0x80) ? "yes" : "no");
 
@@ -77,6 +82,11 @@ void Stats::mqttPublish() const
     MqttSettings.publish("battery/capacityRemaining", String(_remainAh, 1));
     MqttSettings.publish("battery/capacityTotal", String(_totalAh, 1));
     MqttSettings.publish("battery/statusFlag", String(_status));
+
+    auto oTemperature = getTemperature();
+    if (oTemperature) {
+        MqttSettings.publish("battery/temperature", String(*oTemperature, 0));
+    }
 }
 
 } // namespace Batteries::LiTime
