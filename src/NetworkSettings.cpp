@@ -11,6 +11,7 @@
 #include "defaults.h"
 #include <ESPmDNS.h>
 #include <ETH.h>
+#include <esp_wifi.h>
 
 #undef TAG
 static const char* TAG = "network";
@@ -30,6 +31,8 @@ void NetworkSettingsClass::init(Scheduler& scheduler)
 
     WiFi.setScanMethod(WIFI_ALL_CHANNEL_SCAN);
     WiFi.setSortMethod(WIFI_CONNECT_AP_BY_SIGNAL);
+    WiFi.setSleep(false);
+    esp_wifi_set_ps(WIFI_PS_NONE);
 
     WiFi.disconnect(true, true);
 
@@ -97,6 +100,8 @@ void NetworkSettingsClass::NetworkEvent(const WiFiEvent_t event, WiFiEventInfo_t
         break;
     case ARDUINO_EVENT_WIFI_STA_CONNECTED:
         ESP_LOGI(TAG, "WiFi connected");
+        WiFi.setSleep(false);
+        esp_wifi_set_ps(WIFI_PS_NONE);
         if (_networkMode == network_mode::WiFi) {
             raiseEvent(network_event::NETWORK_CONNECTED);
         }
@@ -109,11 +114,15 @@ void NetworkSettingsClass::NetworkEvent(const WiFiEvent_t event, WiFiEventInfo_t
             _lastReconnectAttempt = millis();
             WiFi.disconnect(true, false);
             WiFi.begin();
+            WiFi.setSleep(false);
+            esp_wifi_set_ps(WIFI_PS_NONE);
             raiseEvent(network_event::NETWORK_DISCONNECTED);
         }
         break;
     case ARDUINO_EVENT_WIFI_STA_GOT_IP:
         ESP_LOGI(TAG, "WiFi got ip: %s", WiFi.localIP().toString().c_str());
+        WiFi.setSleep(false);
+        esp_wifi_set_ps(WIFI_PS_NONE);
         if (_networkMode == network_mode::WiFi) {
             raiseEvent(network_event::NETWORK_GOT_IP);
         }
@@ -359,6 +368,9 @@ void NetworkSettingsClass::applyConfig()
     } else {
         success = WiFi.begin() != WL_CONNECT_FAILED;
     }
+
+    WiFi.setSleep(false);
+    esp_wifi_set_ps(WIFI_PS_NONE);
 
     ESP_LOG_LEVEL_LOCAL((success ? ESP_LOG_INFO : ESP_LOG_ERROR), TAG, "Configuring WiFi %s", success ? "done" : "failed");
 
